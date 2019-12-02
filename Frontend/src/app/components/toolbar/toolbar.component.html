@@ -1,0 +1,27 @@
+<div class="container">
+    <div>
+        <p style="font-size: large; font-weight: bold; ">City</p>
+        <div ngbDropdown>
+                <button class="btn btn-outline-primary" id="dropdownConfig" ngbDropdownToggle>{{ current }}</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+                  <button ngbDropdownItem (click)="updateGraph('Ciudad Obregón','cd')">Ciudad Obregón</button>
+                  <button ngbDropdownItem (click)="updateGraph('Navojoa','cd')">Navojoa</button>
+                  <button ngbDropdownItem (click)="updateGraph('Hermosillo','cd')">Hermosillo</button>
+                  <button ngbDropdownItem (click)="updateGraph('Nogales','cd')">Nogales</button>
+                </div>
+              </div>
+    </div>
+    <br>
+      <div>
+            <p style="font-size: large; font-weight: bold; ">Scale</p>
+            <div ngbDropdown>
+                    <button class="btn btn-outline-primary" id="dropdownConfig" ngbDropdownToggle>{{ currentScale }}</button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+                      <button ngbDropdownItem (click)="updateGraph('Celsius','dg')">Celsius</button>
+                      <button ngbDropdownItem (click)="updateGraph('Fahrenheit','dg')">Fahrenheit</button>
+                    </div>
+                  </div>
+        </div>
+</div>
+
+                    

@@ -1,0 +1,22 @@
+<div id="chartContainer" style="height: 370px; width: 100%; margin-left:auto;margin-right:auto;text-align:center;">
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+</div>
+<div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Date</th>
+          <th>Temperature</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let day of days">
+          <td align="left">{{ day?.datetime }}</td>
+          <td align="left">{{ day?.temp.toFixed(1) }}</td>
+        </tr>
+        </tbody>
+      </table>
+         
+</div>

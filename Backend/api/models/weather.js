@@ -44,7 +44,7 @@ module.exports.getCurrentWeather= async function(req,res){
 module.exports.getLast15Days=async function(req,res){
     try {
         var resp={days:[]};
-        for (let index = 0; index < 15; index++) {
+        for (let index = 0; index < 16; index++) {
             var temp= await promiseitLast15(req.params,index).then(result=>{
                 return result;
                 }).catch(err=>{
@@ -53,6 +53,7 @@ module.exports.getLast15Days=async function(req,res){
             console.log("PUEDO HACER "+index);
             resp.days.push(temp.data[0]);
         }
+        defaultDate();
         res.status(200).json(resp);   
         } catch (error) {
             console.log(error);
@@ -60,8 +61,32 @@ module.exports.getLast15Days=async function(req,res){
                                 message:error}); 
         }
 }
-
+function fixDate(index){
+  if ((date_start.day-index)<=0) {
+      date_start.month=date_start.month-1;
+  }
+  if (index==0) {
+    date_start.day=30;    
+    }
+  if ((date_end.day-index)<=0&&index>0) {
+    date_end.month=date_end.month-1;
+    date_end.day=31;
+}
+}
+function defaultDate(){
+    date_end={
+        year: dat.getFullYear(),
+        month: dat.getMonth()+1,
+        day: dat.getDate()
+    };
+    date_start={
+        year: dat.getFullYear(),
+        month: dat.getMonth()+1,
+        day: dat.getDate()-1
+    };  
+}
 function promiseitLast15(data,index){
+    fixDate(index);
     var options={
         hostname: 'api.weatherbit.io',
         port: '80',
@@ -75,16 +100,23 @@ function promiseitLast15(data,index){
             status:'404',
             message:'The resource was not found.'})));    
     }
+    if(res.statusCode==500){
+        reject(JSON.parse(JSON.stringify({
+            status:'500',
+            message:'Error en el servidor'})));  
+    }
     var body="";
     res.on('data',function(chunk){
         body+=chunk;
     });
     res.on('end',function(){
         try {
+            console.log(body +" FECHA DE INICIO: "+date_start.month+"-"+(date_start.day-index)+" FECHA DE FIN: "+date_end.month+"-"+(date_end.day-index));
             const json=JSON.parse(body);   
             resolve(json);
         } catch (err) {
-            reject(error);
+            console.log("ERROR AQUI DE NUEVO? ");
+            reject(err);
         }
     });
     });
